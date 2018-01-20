@@ -1,0 +1,23 @@
+{
+    "name": "nunar/halcom",
+    "type": "library",
+    "description": "Wrapper for Halcom One For All Web Service",
+    "keywords": ["certificate", "halcom", "soap"],
+    "authors": [
+        {
+            "name": "Anze Nunar",
+            "email": "anze@nunar.si",
+            "role": "Developer"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">7.0",
+        "ext-soap": "*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Halcom\\": "src/"
+        }
+    }
+}
