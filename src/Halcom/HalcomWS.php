@@ -38,8 +38,21 @@ class HalcomWS
      * @param  bool  $allowSelfSigned
      * @return void
      */
-    public function __construct($localCert, $localPk, $allowSelfSigned = false, $verifyPeer = true)
+    public function __construct($localCert = null, $localPk = null, $allowSelfSigned = false, $verifyPeer = true)
     {
+        if (empty($localCert) && empty($localPk) && function_exists('env')) {
+            $pairs = [
+                'HALCOM_LOCAL_CERT' => 'localCert',
+                'HALCOM_LOCAL_PK' => 'localPk',
+                'HALCOM_ALLOW_SELF_SIGNED' => 'allowSelfSigned',
+                'HALCOM_VERIFY_PEER' => 'verifyPeer',
+            ];
+
+            foreach ($pairs as $value => $var) {
+                $$var = env($value);
+            }
+        }
+
         $this->streamContext = [
             'ssl' => [
                 'allow_self_signed' => $allowSelfSigned,
@@ -65,7 +78,7 @@ class HalcomWS
             'stream_context' => stream_context_create($this->streamContext),
             'trace' => 0,
             'exceptions' => 0,
-            'cache_wsdl' => WSDL_CACHE_NONE
+            'cache_wsdl' => WSDL_CACHE_NONE,
         ]);
         $soapClient->cert = str_replace(['-----BEGIN CERTIFICATE-----', '-----END CERTIFICATE-----'], '', $cert);
         $soapClient->taxNumber = $taxNumber;
